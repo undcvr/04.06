@@ -1,0 +1,21 @@
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "8000:8000"  
+    volumes:
+      - ./library-project:/library-project
+  
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+  
+    depends_on:
+        - database # Устанавливаем зависимость от базы данных, чтобы база данных загрузилась перед django
+
+  database:
+    image: postgres:14.6-alpine
+    environment:
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=dbname
